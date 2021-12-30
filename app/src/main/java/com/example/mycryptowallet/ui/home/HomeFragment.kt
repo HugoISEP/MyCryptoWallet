@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -15,11 +14,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mycryptowallet.R
 import com.example.mycryptowallet.model.CryptoApi
 import com.example.mycryptowallet.model.TimeInterval
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.ChartTouchListener
-import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -51,19 +49,27 @@ class HomeFragment : Fragment() {
             pieChart.invalidate()
         })
 
+        val lineChart = root.findViewById(R.id.lineChart) as LineChart
+        homeViewModel.lineDataSet().observe(viewLifecycleOwner, Observer<LineDataSet> { it ->
+            lineChart.description.isEnabled = false
+            lineChart.visibility = View.VISIBLE
+            lineChart.data = LineData(it)
+            lineChart.animateXY(1000, 1000)
+            lineChart.invalidate()
+        })
+
         pieChart.setOnChartValueSelectedListener(object: OnChartValueSelectedListener{
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                Log.d("setOnChartValueSelected", "onValueSelected")
-                Log.d("setOnChartValueSelected", e.toString())
                 if (e != null) {
                     cardView.visibility = View.VISIBLE
+                    lineChart.visibility = View.INVISIBLE
                     setCardValues(root, e)
                 }
             }
 
             override fun onNothingSelected() {
                 cardView.visibility = View.INVISIBLE
-                Log.d("setOnChartValueSelected", "onNothingSelected")
+                lineChart.visibility = View.INVISIBLE
             }
 
         })

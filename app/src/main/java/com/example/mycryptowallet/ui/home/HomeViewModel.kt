@@ -5,20 +5,22 @@ import androidx.lifecycle.*
 import com.example.mycryptowallet.api.CryptoApiService
 import com.example.mycryptowallet.model.CandlestickData
 import com.example.mycryptowallet.model.TimeInterval
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 
 class HomeViewModel : ViewModel() {
 
     private val cryptoApiService = CryptoApiService.retrofitService
-    private val pairSelected = MutableLiveData<String>()
-    private val intervalSelected = MutableLiveData<TimeInterval>()
-    private val _candlesData = MutableLiveData<List<CandlestickData>?>()
+    private val _lineDataSet = MutableLiveData<LineDataSet>()
+    fun lineDataSet(): LiveData<LineDataSet> {
+        return _lineDataSet
+    }
 
     fun getCandlesData(timeInterval: TimeInterval, pairSelected: String) {
         Log.d("getCandlesData", "enter")
@@ -30,7 +32,7 @@ class HomeViewModel : ViewModel() {
             TimeInterval.YEAR -> {
                 interval = "1w"
                 // Current time minus one year in milliseconds
-                startTime = currentEpochTime - oneDayInMillis * 365
+                startTime = currentEpochTime - 31556952000
             }
             TimeInterval.MONTH -> {
                 interval = "1d"
@@ -55,14 +57,15 @@ class HomeViewModel : ViewModel() {
 
                 if (response.isSuccessful && response.body() != null) {
                     val content = response.body()
-                    val list: MutableList<CandlestickData> = mutableListOf()
+                    val entries: MutableList<Entry> = ArrayList()
                     if (content != null) {
                         for (d in content) {
-                            list.add(CandlestickData(d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7], d[8], d[9], d[10], d[11]))
+                            val candleData = CandlestickData(d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7], d[8], d[9], d[10], d[11])
+                            entries.add(Entry(candleData.closeTime.toFloat(), candleData.close.toFloat()))
                         }
                     }
-                    Log.d("content", list.toString())
-                    // _candlesData.value = content
+                    val lineDataSet = LineDataSet(entries, "lineChart")
+                    _lineDataSet.value = lineDataSet
                 } else {
                     Log.d("getCryptoPrice", "failure")
                 }
