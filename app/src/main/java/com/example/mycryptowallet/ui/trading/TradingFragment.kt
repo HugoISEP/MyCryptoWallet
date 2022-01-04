@@ -1,4 +1,4 @@
-package com.example.mycryptowallet.ui.notifications
+package com.example.mycryptowallet.ui.trading
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mycryptowallet.R
 
-class NotificationsFragment : Fragment() {
+class TradingFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var tradingViewModel: TradingViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-                ViewModelProvider(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+        tradingViewModel =
+                ViewModelProvider(this).get(TradingViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_trading, container, false)
+        val textView: TextView = root.findViewById(R.id.text_trading)
+        tradingViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

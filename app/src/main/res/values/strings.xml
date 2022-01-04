@@ -2,7 +2,7 @@
     <string name="app_name">MyCryptoWallet</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_trading">Trading Bot</string>
     <string name="add_crypto">Add Crypto</string>
     <string name="empty_not_saved">Crypto not saved because it is empty.</string>
     <string name="button_save">Save</string>
