@@ -1,6 +1,7 @@
 package com.example.mycryptowallet.api
 
 import com.example.mycryptowallet.configuration.AuthenticationInterceptor
+import com.example.mycryptowallet.model.CandlestickData
 import com.example.mycryptowallet.model.CryptoApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -31,7 +32,14 @@ private val retrofit = Retrofit.Builder()
 
 interface CryptoApiRoot {
     @GET("ticker/price")
-    suspend fun getCryptoPrice(@Query("symbol") symbolPair: String): Response<CryptoApi>
+    suspend fun getCryptoPrice(@Query("symbol", encoded = true) symbolPair: String): Response<CryptoApi>
+
+    @GET("klines")
+    suspend fun getPriceHistoryFromPair(
+            @Query("symbol", encoded = true) symbolPair: String,
+            @Query("interval", encoded = true) interval: String,
+            @Query("startTime", encoded = true) startTime: Long
+    ): Response<ArrayList<ArrayList<String>>>
 }
 
 object CryptoApiService {
