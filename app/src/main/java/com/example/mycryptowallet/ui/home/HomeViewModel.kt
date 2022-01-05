@@ -23,7 +23,6 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getCandlesData(timeInterval: TimeInterval, pairSelected: String) {
-        Log.d("getCandlesData", "enter")
         var interval = ""
         var startTime: Long = 0
         val currentEpochTime = Calendar.getInstance().timeInMillis
@@ -74,11 +73,6 @@ class HomeViewModel : ViewModel() {
                 Log.d("getCryptoPrice", "failure: ${e.message}")
             }
         }
-    }
-
-    fun testing(timeInterval: TimeInterval, pairSelected: String) {
-        Log.d("getCandlesData", "testing")
-
     }
 
     val pieChartData: LiveData<PieDataSet> = liveData {

@@ -3,7 +3,6 @@ package com.example.mycryptowallet.ui.home
 import android.graphics.Color.BLACK
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,9 +34,28 @@ class HomeFragment : Fragment() {
         homeViewModel =
                 ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val cardView = root.findViewById(R.id.card) as MaterialCardView
+
+        initializePieChart(root)
+        initializeLineChart(root)
+
+        return root
+    }
+
+    private fun initializePieChart(root: View){
+        // Default pieChart parameters
         val pieChart = root.findViewById(R.id.pieChart) as PieChart
-        initializePieChart(pieChart)
+        pieChart.setNoDataText("Loading ...")
+        pieChart.isClickable = true
+        pieChart.setEntryLabelColor(BLACK)
+        pieChart.setCenterTextSize(30F)
+        pieChart.setNoDataTextColor(BLACK)
+        pieChart.setNoDataTextTypeface(Typeface.DEFAULT_BOLD)
+        pieChart.description.isEnabled = false
+        pieChart.legend.setDrawInside(true)
+        pieChart.extraBottomOffset = 10f
+        pieChart.isRotationEnabled = false
+
+        // LiveData for pieChart
         homeViewModel.pieChartData.observe(viewLifecycleOwner, Observer<PieDataSet> { it ->
             it.valueTextSize = 15f
             it.valueTextColor = BLACK
@@ -49,21 +67,15 @@ class HomeFragment : Fragment() {
             pieChart.invalidate()
         })
 
+        // On click listener on PieChart
+        val cardView = root.findViewById(R.id.card) as MaterialCardView
         val lineChart = root.findViewById(R.id.lineChart) as LineChart
-        homeViewModel.lineDataSet().observe(viewLifecycleOwner, Observer<LineDataSet> { it ->
-            lineChart.description.isEnabled = false
-            lineChart.visibility = View.VISIBLE
-            lineChart.data = LineData(it)
-            lineChart.animateXY(1000, 1000)
-            lineChart.invalidate()
-        })
-
         pieChart.setOnChartValueSelectedListener(object: OnChartValueSelectedListener{
-            override fun onValueSelected(e: Entry?, h: Highlight?) {
-                if (e != null) {
+            override fun onValueSelected(entry: Entry?, h: Highlight?) {
+                if (entry != null) {
                     cardView.visibility = View.VISIBLE
                     lineChart.visibility = View.INVISIBLE
-                    setCardValues(root, e)
+                    setCardValues(root, entry)
                 }
             }
 
@@ -73,27 +85,23 @@ class HomeFragment : Fragment() {
             }
 
         })
-
-        return root
     }
 
-    private fun initializePieChart(pieChart: PieChart){
-        pieChart.setNoDataText("Loading ...")
-        pieChart.isClickable = true
-        pieChart.setEntryLabelColor(BLACK)
-        pieChart.setCenterTextSize(30F)
-        pieChart.setNoDataTextColor(BLACK)
-        pieChart.setNoDataTextTypeface(Typeface.DEFAULT_BOLD)
-        pieChart.description.isEnabled = false
-        pieChart.legend.setDrawInside(true)
-        pieChart.extraBottomOffset = 10f
-        pieChart.isRotationEnabled = false
+    private fun initializeLineChart(root: View){
+        val lineChart = root.findViewById(R.id.lineChart) as LineChart
+        // LiveData for lineChart
+        homeViewModel.lineDataSet().observe(viewLifecycleOwner, Observer<LineDataSet> { it ->
+            lineChart.description.isEnabled = false
+            lineChart.visibility = View.VISIBLE
+            lineChart.data = LineData(it)
+            lineChart.animateXY(1000, 1000)
+            lineChart.invalidate()
+        })
     }
 
     private fun setCardValues(root: View, entry: Entry){
         val crypto = entry.data as CryptoApi
         val cryptoSymbol = crypto.symbol.split("USDT")[0]
-        Log.d("setOnChartValueSelected", crypto.symbol.split("USDT").toString())
 
         val titleView = root.findViewById<TextView>(R.id.cardTitle)
         titleView.text = crypto.symbol
