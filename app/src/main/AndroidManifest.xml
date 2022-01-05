@@ -3,6 +3,7 @@
     package="com.example.mycryptowallet">
 
     <application
+        android:name=".data.CryptosApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,7 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCryptoWallet">
         <activity
+            android:name=".NewCryptoActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
