@@ -11,8 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 private val client: OkHttpClient = OkHttpClient.Builder()
@@ -47,11 +46,11 @@ interface TradingBotApi {
     @GET("bot/{id}/ordersHistory")
     suspend fun getBotOrderHistory(
         @Path("id") id: Int,
-        market: String?,
-        side: String?,
-        order_type: String?,
-        start_time: Float?,
-        end_time: Float?): Response<List<CryptoOrder>>
+        @Query("market") market: String? = null,
+        @Query("side") side: String? = null,
+        @Query("order_type") orderType: String? = null,
+        @Query("start_time", encoded = true) startTime: Long? = null,
+        @Query("end_time") endTime: Float? = null): Response<List<CryptoOrder>>
 
 }
 

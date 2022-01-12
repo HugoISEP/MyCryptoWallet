@@ -8,4 +8,5 @@
     <string name="button_save">Save</string>
     <string name="hint_crypto_name">Name...</string>
     <string name="hint_crypto_token">Token...</string>
+    <string name="button_settings_description">Button Settings</string>
 </resources>

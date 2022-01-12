@@ -1,6 +1,7 @@
 package com.example.mycryptowallet
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.mycryptowallet.api.BinanceApiService
 import com.example.mycryptowallet.api.TradingBotApiService
+import com.example.mycryptowallet.service.Constant.INITIAL_TRADING_WALLET
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,6 +34,10 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         getCryptoPrice()
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+        sharedPreferences.edit().putFloat(INITIAL_TRADING_WALLET, 50f).apply()
+
     }
 
     private fun getCryptoPrice() {
