@@ -21,12 +21,12 @@ class CryptoListAdapter : ListAdapter<Crypto, CryptoListAdapter.DashboardViewHol
     }
 
     class DashboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val cryptoItemView: TextView = itemView.findViewById(R.id.mtrl_list_item_text)
-        private val cryptoItemView2: TextView = itemView.findViewById(R.id.mtrl_list_item_secondary_text)
+        private val cryptoItemText1: TextView = itemView.findViewById(R.id.mtrl_list_item_text)
+        private val cryptoItemText2: TextView = itemView.findViewById(R.id.mtrl_list_item_secondary_text)
 
         fun bind(name: String?, token: String?) {
-            cryptoItemView.text = name
-            cryptoItemView2.text = token
+            cryptoItemText1.text = name
+            cryptoItemText2.text = token
         }
 
         companion object {
