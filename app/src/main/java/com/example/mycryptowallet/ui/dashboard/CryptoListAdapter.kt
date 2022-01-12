@@ -17,14 +17,16 @@ class CryptoListAdapter : ListAdapter<Crypto, CryptoListAdapter.DashboardViewHol
 
     override fun onBindViewHolder(holder: DashboardViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind(current.name)
+        holder.bind(current.name, current.token)
     }
 
     class DashboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val cryptoItemView: TextView = itemView.findViewById(R.id.textView)
+        private val cryptoItemView: TextView = itemView.findViewById(R.id.mtrl_list_item_text)
+        private val cryptoItemView2: TextView = itemView.findViewById(R.id.mtrl_list_item_secondary_text)
 
-        fun bind(text: String?) {
-            cryptoItemView.text = text
+        fun bind(name: String?, token: String?) {
+            cryptoItemView.text = name
+            cryptoItemView2.text = token
         }
 
         companion object {

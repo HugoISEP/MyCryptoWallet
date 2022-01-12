@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:minHeight="64dp">
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/mtrl_list_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_light" />
-</LinearLayout>
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:maxLines="1"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:background="#bbc2e2"
+        android:fontWeight="800"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/mtrl_list_item_secondary_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mtrl_list_item_text"
+        android:layout_gravity="center_vertical"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:maxLines="2"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:background="#bbc2e2"
+        android:fontWeight="600"
+        android:textSize="16dp"
+        android:fontStyle="italic"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+</RelativeLayout>

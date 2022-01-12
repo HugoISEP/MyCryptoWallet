@@ -42,10 +42,10 @@ class DashboardFragment : Fragment() {
 
 
 
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+//        val textView: TextView = root.findViewById(R.id.text_dashboard)
+//        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+//            textView.text = it
+//        })
 
         dashboardViewModel.allCryptos.observe(viewLifecycleOwner) {
                 cryptos -> cryptos.let { adapter.submitList(it) }
