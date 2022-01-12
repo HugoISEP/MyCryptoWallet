@@ -8,14 +8,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.mycryptowallet.api.CryptoApiService
+import com.example.mycryptowallet.api.BinanceApiService
+import com.example.mycryptowallet.api.TradingBotApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val cryptoApiService = CryptoApiService.retrofitService
+    private val cryptoApiService = BinanceApiService.retrofitService
+    private val tradingBotApiService = TradingBotApiService.retrofitService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,22 +31,25 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_trading))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        getCryptoPrice()
     }
 
-    private fun getCryptoPrice(pairSymbol: String) {
+    private fun getCryptoPrice() {
         GlobalScope.launch(Dispatchers.Main) {
+            Log.d("Enter", "enter")
             try {
-                val response = cryptoApiService.getCryptoPrice(pairSymbol)
+                val response = tradingBotApiService.getBotStatus(1)
+                Log.d("SUCCESS", "response: " + response)
 
                 if (response.isSuccessful && response.body() != null) {
                     val content = response.body()
-                    Log.d("getCryptoPrice", "success")
+                    Log.d("getCryptoPrice", content.toString())
                 } else {
                     Log.d("getCryptoPrice", "failure")
                 }
 
             } catch (e: Exception) {
-                Log.d("getCryptoPrice", "failure")
+                Log.d("getCryptoPrice", "failure: " + e.message)
             }
         }
     }

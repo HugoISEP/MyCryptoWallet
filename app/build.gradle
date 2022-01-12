@@ -22,8 +22,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
-        buildConfigField("String", "API_PASSWORD", apikeyProperties['API_PASSWORD'])
+        buildConfigField("String", "BINANCE_API_KEY", apikeyProperties['BINANCE_API_KEY'])
+        buildConfigField("String", "BINANCE_API_PASSWORD", apikeyProperties['BINANCE_API_PASSWORD'])
+        buildConfigField("String", "CRYPTO_API_KEY", apikeyProperties['CRYPTO_API_KEY'])
+        buildConfigField("String", "CRYPTO_API_PASSWORD", apikeyProperties['CRYPTO_API_PASSWORD'])
     }
 
     buildTypes {
