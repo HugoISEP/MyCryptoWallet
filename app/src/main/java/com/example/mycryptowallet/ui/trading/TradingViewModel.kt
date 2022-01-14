@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.mycryptowallet.api.TradingBotApiService
 import com.example.mycryptowallet.model.CryptoOrder
+import com.example.mycryptowallet.model.FtxBalance
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
@@ -14,21 +15,25 @@ class TradingViewModel : ViewModel() {
 
     private val tradingBotApiService = TradingBotApiService.retrofitService
 
-    val totalBalance: LiveData<Double> = liveData {
+    val balances: LiveData<List<FtxBalance>> = liveData {
         try {
-                val response = tradingBotApiService.getBotBalances(1)
+            val response = tradingBotApiService.getBotBalances(1)
 
-                if (response.isSuccessful && response.body() != null) {
-                    val content = response.body()
-                    val totalUsdValue = content!!.sumOf { it.usdValue.toDouble() }
-                    emit(totalUsdValue)
-                } else {
-                    Log.d("totalBalance", "failure")
-                }
+            if (response.isSuccessful && response.body() != null) {
+                val content = response.body()?.filter { it.usdValue != 0f }
+                emit(content!!)
+            } else {
+                Log.d("totalBalance", "failure")
+            }
 
         } catch (e: Exception) {
             Log.d("totalBalance", e.message.toString())
         }
+    }
+
+    val totalBalance: LiveData<Double?> = liveData {
+        val totalUsdValue = balances.value?.sumOf { it.usdValue.toDouble() }
+        emit(totalUsdValue)
     }
 
 

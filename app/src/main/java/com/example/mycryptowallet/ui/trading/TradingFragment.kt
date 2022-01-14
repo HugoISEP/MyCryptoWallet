@@ -12,8 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mycryptowallet.R
 import com.example.mycryptowallet.service.Constant.INITIAL_TRADING_WALLET
+import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_trading.*
 import java.util.stream.Collectors
+
 
 class TradingFragment : Fragment() {
 
@@ -36,11 +38,29 @@ class TradingFragment : Fragment() {
         val walletPercentageTextView: TextView = root.findViewById(R.id.walletChangePercentage)
         val textView: TextView = root.findViewById(R.id.totalWallet)
         tradingViewModel.totalBalance.observe(viewLifecycleOwner, Observer {
-            textView.text = String.format("%.2f $", it)
+            if (it != null ){
+                textView.text = String.format("%.2f $", it)
 
-            val walletChangePercentage = it * 100 / initialWallet - 100
+                val walletChangePercentage = it * 100 / initialWallet - 100
+                walletPercentageTextView.setTextColor(if (walletChangePercentage > 0) Color.GREEN else Color.RED)
+                walletPercentageTextView.text = String.format("%.2f %%", walletChangePercentage)
+            }
+        })
+
+        tradingViewModel.balances.observe(viewLifecycleOwner, Observer {
+
+            val totalUsdValue = it!!.sumOf { it.usdValue.toDouble() }
+            textView.text = String.format("%.2f $", totalUsdValue)
+
+            val walletChangePercentage = totalUsdValue * 100 / initialWallet - 100
             walletPercentageTextView.setTextColor(if (walletChangePercentage > 0) Color.GREEN else Color.RED)
             walletPercentageTextView.text = String.format("%.2f %%", walletChangePercentage)
+
+            it.forEach { balance ->
+                val chip = Chip(root.context)
+                chip.text = String.format("%.2f %s", balance.free, balance.coin)
+                chipGroup.addView(chip)
+            }
         })
 
         val numberOfTradesTextView: TextView = root.findViewById(R.id.numberOfTrades)
