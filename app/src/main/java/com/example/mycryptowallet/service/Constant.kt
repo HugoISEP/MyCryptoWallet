@@ -3,6 +3,7 @@ package com.example.mycryptowallet.service
 object Constant {
     // SharedPreferences
     const val INITIAL_TRADING_WALLET = "initialTradingWallet"
+    const val NOTIFICATION_PREFERENCE = "notificationPreference"
 
     // API
     const val BINANCE_URL = "https://api.binance.com/api/v3/"

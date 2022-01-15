@@ -1,5 +1,6 @@
 package com.example.mycryptowallet.ui.trading
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -16,6 +17,7 @@ import com.example.mycryptowallet.R
 import com.example.mycryptowallet.model.CryptoOrder
 import com.example.mycryptowallet.service.Constant.INITIAL_TRADING_WALLET
 import com.google.android.material.chip.Chip
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_trading.*
 import java.util.stream.Collectors
 
@@ -83,6 +85,12 @@ class TradingFragment : Fragment() {
             val adapter = TradeRecyclerAdapter(completeTrades as List<Pair<CryptoOrder, CryptoOrder>>)
             recyclerView.adapter = adapter
         })
+
+        val button = root.findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        button.setOnClickListener {
+            val intent = Intent(root.context, TradingSettingsActivity::class.java)
+            startActivity(intent)
+        }
 
         return root
     }
