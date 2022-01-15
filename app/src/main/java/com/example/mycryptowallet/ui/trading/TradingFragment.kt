@@ -10,7 +10,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mycryptowallet.R
+import com.example.mycryptowallet.model.CryptoOrder
 import com.example.mycryptowallet.service.Constant.INITIAL_TRADING_WALLET
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_trading.*
@@ -67,11 +70,18 @@ class TradingFragment : Fragment() {
         val positiveTradesTextView: TextView = root.findViewById(R.id.positiveTrades)
         val negativeTradesTextView: TextView = root.findViewById(R.id.negativeTrades)
         tradingViewModel.weekTrades.observe(viewLifecycleOwner, Observer { list ->
-            numberOfTradesTextView.text = list.stream().filter { it.second != null}.collect(Collectors.toList()).size.toString()
-            positiveTradesTextView.text = list.stream().filter { it.second != null && it.first.avgFillPrice!! < it.second!!.avgFillPrice!!}.collect(Collectors.toList()).size.toString()
+            val completeTrades = list.stream().filter { it.second != null}.collect(Collectors.toList())
+            numberOfTradesTextView.text = completeTrades.size.toString()
+            positiveTradesTextView.text = completeTrades.stream().filter { it.first.avgFillPrice!! < it.second!!.avgFillPrice!!}.collect(Collectors.toList()).size.toString()
             positiveTrades.setTextColor(Color.GREEN)
-            negativeTradesTextView.text = list.stream().filter { it.second != null && it.first.avgFillPrice!! > it.second!!.avgFillPrice!!}.collect(Collectors.toList()).size.toString()
+            negativeTradesTextView.text = completeTrades.stream().filter { it.first.avgFillPrice!! > it.second!!.avgFillPrice!!}.collect(Collectors.toList()).size.toString()
             negativeTrades.setTextColor(Color.RED)
+
+            val layoutManager = LinearLayoutManager(root.context)
+            val recyclerView: RecyclerView = root.findViewById(R.id.tradeRecyclerView)
+            recyclerView.layoutManager = layoutManager
+            val adapter = TradeRecyclerAdapter(completeTrades as List<Pair<CryptoOrder, CryptoOrder>>)
+            recyclerView.adapter = adapter
         })
 
         return root
