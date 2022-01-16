@@ -13,11 +13,6 @@ import androidx.lifecycle.viewModelScope
 
 class DashboardViewModel(private val repository: CryptoRepository) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
-    }
-    val text: LiveData<String> = _text
-
     val allCryptos: LiveData<List<Crypto>> = repository.allCryptos.asLiveData()
     fun insert(crypto: Crypto) = viewModelScope.launch { repository.insert(crypto) }
 }
