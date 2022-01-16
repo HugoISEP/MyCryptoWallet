@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mycryptowallet.R
 import com.example.mycryptowallet.model.CryptoOrder
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class TradeRecyclerAdapter(private val dataSet: List<Pair<CryptoOrder, CryptoOrder>>): RecyclerView.Adapter<TradeRecyclerAdapter.ViewHolder>() {
@@ -27,6 +29,9 @@ class TradeRecyclerAdapter(private val dataSet: List<Pair<CryptoOrder, CryptoOrd
             dataSet[position].first.filledSize,
             dataSet[position].first.market.split("/USD")[0])
 
+        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.FRANCE)
+        holder.itemDateText.text = sdf.format(dataSet[position].second?.createdAt)
+
         val diffPrice = dataSet[position].first.filledSize * (dataSet[position].second.avgFillPrice!! - dataSet[position].first.avgFillPrice!!)
         holder.itemSupportingText.text = String.format("%.2f USD", diffPrice)
         holder.itemSupportingText.setTextColor(if (diffPrice > 0) Color.GREEN else Color.RED)
@@ -38,5 +43,6 @@ class TradeRecyclerAdapter(private val dataSet: List<Pair<CryptoOrder, CryptoOrd
         var itemTitle: TextView = itemView.findViewById(R.id.title)
         var itemSecondaryText: TextView = itemView.findViewById(R.id.secondaryText)
         var itemSupportingText: TextView = itemView.findViewById(R.id.supportingText)
+        var itemDateText: TextView = itemView.findViewById(R.id.date)
     }
 }
