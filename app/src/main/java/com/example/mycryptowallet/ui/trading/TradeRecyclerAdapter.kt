@@ -24,14 +24,17 @@ class TradeRecyclerAdapter(private val dataSet: List<Pair<CryptoOrder, CryptoOrd
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // market name
         holder.itemTitle.text = dataSet[position].first.market
+        // number of coins
         holder.itemSecondaryText.text = String.format("%.2f %s",
             dataSet[position].first.filledSize,
             dataSet[position].first.market.split("/USD")[0])
-
+        // date sell transaction
         val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.FRANCE)
         holder.itemDateText.text = sdf.format(dataSet[position].second?.createdAt)
 
+        // diff price
         val diffPrice = dataSet[position].first.filledSize * (dataSet[position].second.avgFillPrice!! - dataSet[position].first.avgFillPrice!!)
         holder.itemSupportingText.text = String.format("%.2f USD", diffPrice)
         holder.itemSupportingText.setTextColor(if (diffPrice > 0) Color.GREEN else Color.RED)

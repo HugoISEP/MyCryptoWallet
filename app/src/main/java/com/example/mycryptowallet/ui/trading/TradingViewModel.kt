@@ -15,6 +15,7 @@ class TradingViewModel : ViewModel() {
 
     private val tradingBotApiService = TradingBotApiService.retrofitService
 
+    // Get balances of the trading bot
     val balances: LiveData<List<FtxBalance>> = liveData {
         try {
             val response = tradingBotApiService.getBotBalances(1)
@@ -23,20 +24,15 @@ class TradingViewModel : ViewModel() {
                 val content = response.body()?.filter { it.usdValue != 0f }
                 emit(content!!)
             } else {
-                Log.d("totalBalance", "failure")
+                Log.d("balances", "failure")
             }
 
         } catch (e: Exception) {
-            Log.d("totalBalance", e.message.toString())
+            Log.d("balances", e.message.toString())
         }
     }
 
-    val totalBalance: LiveData<Double?> = liveData {
-        val totalUsdValue = balances.value?.sumOf { it.usdValue.toDouble() }
-        emit(totalUsdValue)
-    }
-
-
+    // Get week trades of the trading bot
     val weekTrades: LiveData<MutableList<Pair<CryptoOrder, CryptoOrder?>>> = liveData {
         try {
             val currentEpochTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
@@ -68,7 +64,7 @@ class TradingViewModel : ViewModel() {
             }
 
         } catch (e: Exception) {
-            Log.d("weekTrades error", e.message.toString())
+            Log.d("weekTrades", e.message.toString())
         }
     }
 
