@@ -1,19 +1,18 @@
 package com.example.mycryptowallet.ui.trading
 
-import android.app.Activity
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mycryptowallet.R
 import com.example.mycryptowallet.service.Constant
+import com.example.mycryptowallet.service.Constant.NOTIFICATION_TOPIC
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_trading_settings.*
 
 
@@ -31,17 +30,17 @@ class TradingSettingsActivity: AppCompatActivity(){
         notificationSwitchView = findViewById(R.id.notificationSwitch)
         saveButton = findViewById(R.id.saveButton)
 
-        notificationSwitchView.isChecked = sharedPreferences.getBoolean(Constant.NOTIFICATION_PREFERENCE, true)
+        notificationSwitchView.isChecked = sharedPreferences.getBoolean(Constant.NOTIFICATION_PREFERENCE, false)
         initialInvestmentTextView.setText(sharedPreferences.getFloat(Constant.INITIAL_TRADING_WALLET, 0f).toString())
         initialInvestmentTextView.addTextChangedListener(textWatcher)
 
         saveButton.setOnClickListener {
-            val replyIntent = Intent()
-            if (TextUtils.isEmpty(initialInvestmentTextView.text)) {
-                setResult(Activity.RESULT_CANCELED, replyIntent)
+            sharedPreferences.edit().putFloat(Constant.INITIAL_TRADING_WALLET, initialInvestmentTextView.text.toString().toFloat()).apply()
+            sharedPreferences.edit().putBoolean(Constant.NOTIFICATION_PREFERENCE, notificationSwitch.isChecked).apply()
+            if (sharedPreferences.getBoolean(Constant.NOTIFICATION_PREFERENCE, true)){
+                FirebaseMessaging.getInstance().subscribeToTopic(NOTIFICATION_TOPIC)
             } else {
-                sharedPreferences.edit().putFloat(Constant.INITIAL_TRADING_WALLET, initialInvestmentTextView.text.toString().toFloat()).apply()
-                sharedPreferences.edit().putBoolean(Constant.NOTIFICATION_PREFERENCE, notificationSwitch.isChecked).apply()
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(NOTIFICATION_TOPIC)
             }
             finish()
         }

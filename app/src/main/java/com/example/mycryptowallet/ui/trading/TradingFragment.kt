@@ -63,7 +63,7 @@ class TradingFragment : Fragment() {
 
             it.forEach { balance ->
                 val chip = Chip(root.context)
-                chip.text = String.format("%.2f %s", balance.free, balance.coin)
+                chip.text = String.format("%.2f %s", balance.total, balance.coin)
                 chipGroup.addView(chip)
             }
         })
