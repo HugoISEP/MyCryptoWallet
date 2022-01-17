@@ -22,9 +22,4 @@
         android:name="com.example.mycryptowallet.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
-    <fragment
-        android:id="@+id/navigation_crypto_detail"
-        android:name="com.example.mycryptowallet.ui.dashboard.detail.CryptoDetailFragment"
-        android:label="CryptoDetail"
-        tools:layout="@layout/crypto_detail_fragment"/>
 </navigation>
