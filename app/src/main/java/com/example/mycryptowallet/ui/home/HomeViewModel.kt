@@ -2,7 +2,7 @@ package com.example.mycryptowallet.ui.home
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.mycryptowallet.api.CryptoApiService
+import com.example.mycryptowallet.api.BinanceApiService
 import com.example.mycryptowallet.model.CandlestickData
 import com.example.mycryptowallet.model.TimeInterval
 import com.github.mikephil.charting.data.Entry
@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 
 class HomeViewModel : ViewModel() {
 
-    private val cryptoApiService = CryptoApiService.retrofitService
+    private val cryptoApiService = BinanceApiService.retrofitService
     private val _lineDataSet = MutableLiveData<LineDataSet>()
     fun lineDataSet(): LiveData<LineDataSet> {
         return _lineDataSet

@@ -1,7 +1,6 @@
 package com.example.mycryptowallet.api
 
-import com.example.mycryptowallet.configuration.AuthenticationInterceptor
-import com.example.mycryptowallet.model.CandlestickData
+import com.example.mycryptowallet.configuration.BinanceAuthenticationInterceptor
 import com.example.mycryptowallet.model.CryptoApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -16,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 private val client: OkHttpClient = OkHttpClient.Builder()
-    .addInterceptor(AuthenticationInterceptor())
+    .addInterceptor(BinanceAuthenticationInterceptor())
     .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
     .build()
 
@@ -30,7 +29,7 @@ private val retrofit = Retrofit.Builder()
     .client(client)
     .build()
 
-interface CryptoApiRoot {
+interface BinanceApiRoot {
     @GET("ticker/price")
     suspend fun getCryptoPrice(@Query("symbol", encoded = true) symbolPair: String): Response<CryptoApi>
 
@@ -42,8 +41,8 @@ interface CryptoApiRoot {
     ): Response<ArrayList<ArrayList<String>>>
 }
 
-object CryptoApiService {
-    val retrofitService : CryptoApiRoot by lazy {
-        retrofit.create(CryptoApiRoot::class.java)
+object BinanceApiService {
+    val retrofitService : BinanceApiRoot by lazy {
+        retrofit.create(BinanceApiRoot::class.java)
     }
 }
