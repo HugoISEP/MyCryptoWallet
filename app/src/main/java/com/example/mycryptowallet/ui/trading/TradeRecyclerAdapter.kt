@@ -36,7 +36,7 @@ class TradeRecyclerAdapter(private val dataSet: List<Pair<CryptoOrder, CryptoOrd
 
         // diff price
         val diffPrice = dataSet[position].first.filledSize * (dataSet[position].second.avgFillPrice!! - dataSet[position].first.avgFillPrice!!)
-        holder.itemSupportingText.text = String.format("%.2f USD", diffPrice)
+        holder.itemSupportingText.text = String.format("%.2f $", diffPrice)
         holder.itemSupportingText.setTextColor(if (diffPrice > 0) Color.GREEN else Color.RED)
     }
 
