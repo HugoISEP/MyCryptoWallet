@@ -8,4 +8,9 @@
     <string name="button_save">Save</string>
     <string name="hint_crypto_name">Name...</string>
     <string name="hint_crypto_token">Token...</string>
+    <string name="hint_crypto_amount">Amount...</string>
+    <string name="hint_value">Value...</string>
+    <string name="add_order">Add order</string>
+    <string name="buy_order">Buy order</string>
+    <string name="sell_order">Sell order</string>
 </resources>

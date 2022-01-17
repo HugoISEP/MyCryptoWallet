@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mycryptowallet">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".data.CryptosApplication"
         android:allowBackup="true"
@@ -10,6 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCryptoWallet">
+        <activity
+            android:name=".ui.dashboard.detail.NewOrderActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.dashboard.detail.CryptoDetailActivity"
+            android:exported="true" />
         <activity
             android:name=".NewCryptoActivity"
             android:exported="true" />
@@ -25,6 +34,4 @@
         </activity>
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>
