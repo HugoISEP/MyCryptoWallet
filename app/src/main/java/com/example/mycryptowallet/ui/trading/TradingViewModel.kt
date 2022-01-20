@@ -1,12 +1,9 @@
 package com.example.mycryptowallet.ui.trading
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.example.mycryptowallet.api.TradingBotApiService
 import com.example.mycryptowallet.model.CryptoOrder
-import com.example.mycryptowallet.model.FtxBalance
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
@@ -14,9 +11,26 @@ import java.util.*
 class TradingViewModel : ViewModel() {
 
     private val tradingBotApiService = TradingBotApiService.retrofitService
+    private val reloadTrigger = MutableLiveData(false)
+
+    init {
+        refresh()
+    }
+
+    val balances = Transformations.switchMap(reloadTrigger){
+        fetchBalances()
+    }
+
+    val weekTrades = Transformations.switchMap(reloadTrigger){
+        fetchWeekTrades()
+    }
+
+    fun refresh() {
+        reloadTrigger.value = !(reloadTrigger.value as Boolean)
+    }
 
     // Get balances of the trading bot
-    val balances: LiveData<List<FtxBalance>> = liveData {
+    private fun fetchBalances() = liveData {
         try {
             val response = tradingBotApiService.getBotBalances(1)
 
@@ -33,7 +47,7 @@ class TradingViewModel : ViewModel() {
     }
 
     // Get week trades of the trading bot
-    val weekTrades: LiveData<MutableList<Pair<CryptoOrder, CryptoOrder?>>> = liveData {
+    private fun fetchWeekTrades() = liveData {
         try {
             val currentEpochTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
             val sevenDayInMillis = 604800
@@ -67,6 +81,5 @@ class TradingViewModel : ViewModel() {
             Log.d("weekTrades", e.message.toString())
         }
     }
-
 
 }

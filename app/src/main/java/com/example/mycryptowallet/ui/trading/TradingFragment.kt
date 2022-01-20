@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mycryptowallet.R
 import com.example.mycryptowallet.model.CryptoOrder
 import com.example.mycryptowallet.model.FtxBalance
@@ -25,6 +26,7 @@ import java.util.stream.Collectors
 
 class TradingFragment : Fragment() {
 
+    private val WALLET_BALANCES = "WALLET_BALANCES"
     private lateinit var tradingViewModel: TradingViewModel
     private var initialWallet = 0f
 
@@ -37,6 +39,7 @@ class TradingFragment : Fragment() {
                 ViewModelProvider(this).get(TradingViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_trading, container, false)
 
+        swipeRefreshInitialization(root)
         initialInvestmentInitialization(root)
 
         tradingViewModel.balances.observe(viewLifecycleOwner, Observer {
@@ -50,6 +53,14 @@ class TradingFragment : Fragment() {
         tradingSettingButtonInitialization(root)
 
         return root
+    }
+
+    private fun swipeRefreshInitialization(root: View){
+        val swipeRefreshLayout = root.findViewById<SwipeRefreshLayout>(R.id.swiperefresh)
+        swipeRefreshLayout.setOnRefreshListener {
+            tradingViewModel.refresh()
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun initialInvestmentInitialization(root: View){
@@ -71,6 +82,7 @@ class TradingFragment : Fragment() {
         walletPercentageTextView.setTextColor(if (walletChangePercentage > 0) Color.GREEN else Color.RED)
         walletPercentageTextView.text = String.format("%.2f %%", walletChangePercentage)
 
+        chipGroup.removeAllViews()
         list.forEach { balance ->
             val chip = Chip(root.context)
             chip.text = String.format("%.2f %s", balance.total, balance.coin)
@@ -105,4 +117,11 @@ class TradingFragment : Fragment() {
             startActivity(intent)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        tradingViewModel.refresh()
+        initialInvestmentInitialization(requireView())
+    }
+
 }
