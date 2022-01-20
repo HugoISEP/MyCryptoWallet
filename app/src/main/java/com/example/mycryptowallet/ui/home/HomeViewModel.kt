@@ -3,6 +3,8 @@ package com.example.mycryptowallet.ui.home
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.mycryptowallet.api.BinanceApiService
+import com.example.mycryptowallet.data.Entity.Crypto
+import com.example.mycryptowallet.data.Repository.CryptoRepository
 import com.example.mycryptowallet.model.CandlestickData
 import com.example.mycryptowallet.model.TimeInterval
 import com.github.mikephil.charting.data.Entry
@@ -14,12 +16,19 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(private val cryptoRepository: CryptoRepository) : ViewModel() {
+
+    private val allCryptos: LiveData<List<Crypto>> = cryptoRepository.allCryptos.asLiveData()
 
     private val cryptoApiService = BinanceApiService.retrofitService
     private val _lineDataSet = MutableLiveData<LineDataSet>()
     fun lineDataSet(): LiveData<LineDataSet> {
         return _lineDataSet
+    }
+
+
+    fun pieChartData() = Transformations.switchMap(allCryptos){
+        getChartData(it)
     }
 
     fun getCandlesData(timeInterval: TimeInterval, pairSelected: String) {
@@ -75,24 +84,23 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    val pieChartData: LiveData<PieDataSet> = liveData {
-        val dataObjects = listOf(Pair("MANA", 123.0F), Pair("BTC", 0.0001F), Pair("ETH", 0.005F), Pair("SAND", 5.0F))
+    fun getChartData(cryptos :List<Crypto>) = liveData {
         val entries: MutableList<PieEntry> = ArrayList()
-        for (data in dataObjects) {
-            // turn data into Entry objects
+        // turn data into Entry objects
+        for (crypto in cryptos) {
             try {
-                val response = cryptoApiService.getCryptoPrice(data.first + "USDT")
+                val response = cryptoApiService.getCryptoPrice(crypto.token + "USDT")
 
                 if (response.isSuccessful && response.body() != null) {
                     val content = response.body()
-                    val usdValue = content!!.price.toFloat() * data.second
-                    entries.add(PieEntry(usdValue, data.first, content))
+                    val usdValue = content!!.price.toFloat() * crypto.amount
+                    entries.add(PieEntry(usdValue.toFloat(), crypto.token, content))
                 } else {
                     Log.d("getCryptoPrice", "failure")
                 }
 
             } catch (e: Exception) {
-                Log.d("getCryptoPrice", "failure")
+                Log.d("getCryptoPrice", e.message.toString())
             }
         }
         val dataSet = PieDataSet(entries, null)
