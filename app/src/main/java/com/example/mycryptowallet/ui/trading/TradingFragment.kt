@@ -26,7 +26,6 @@ import java.util.stream.Collectors
 
 class TradingFragment : Fragment() {
 
-    private val WALLET_BALANCES = "WALLET_BALANCES"
     private lateinit var tradingViewModel: TradingViewModel
     private var initialWallet = 0f
 
