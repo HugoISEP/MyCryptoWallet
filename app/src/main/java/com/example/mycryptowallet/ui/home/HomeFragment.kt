@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.mycryptowallet.R
+import com.example.mycryptowallet.data.CryptosApplication
 import com.example.mycryptowallet.model.CryptoApi
 import com.example.mycryptowallet.model.TimeInterval
+import com.example.mycryptowallet.ui.dashboard.DashboardViewModelFactory
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
@@ -24,15 +26,15 @@ import com.google.android.material.card.MaterialCardView
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by viewModels {
+        DashboardViewModelFactory((requireActivity().application as CryptosApplication).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         initializePieChart(root)
@@ -56,7 +58,7 @@ class HomeFragment : Fragment() {
         pieChart.isRotationEnabled = false
 
         // LiveData for pieChart
-        homeViewModel.pieChartData.observe(viewLifecycleOwner, Observer<PieDataSet> { it ->
+        homeViewModel.pieChartData().observe(viewLifecycleOwner, Observer<PieDataSet> { it ->
             it.valueTextSize = 15f
             it.valueTextColor = BLACK
             pieChart.centerText = String.format(
@@ -112,8 +114,6 @@ class HomeFragment : Fragment() {
         val supportingTextView = root.findViewById<TextView>(R.id.supportingText)
         supportingTextView.text = String.format("Price: 1 %s = %.2f USD", cryptoSymbol, crypto.price.toFloat())
 
-        homeViewModel =
-                ViewModelProvider(this).get(HomeViewModel::class.java)
         val oneYearButton = root.findViewById<MaterialButton>(R.id.oneYearButton)
         oneYearButton.setOnClickListener {
             homeViewModel.getCandlesData(TimeInterval.YEAR, crypto.symbol)

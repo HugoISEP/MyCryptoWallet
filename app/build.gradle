@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 def apikeyPropertiesFile = rootProject.file("apikey.properties")
@@ -23,8 +24,10 @@ android {
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
-        buildConfigField("String", "API_PASSWORD", apikeyProperties['API_PASSWORD'])
+        buildConfigField("String", "BINANCE_API_KEY", apikeyProperties['BINANCE_API_KEY'])
+        buildConfigField("String", "BINANCE_API_PASSWORD", apikeyProperties['BINANCE_API_PASSWORD'])
+        buildConfigField("String", "CRYPTO_API_KEY", apikeyProperties['CRYPTO_API_KEY'])
+        buildConfigField("String", "CRYPTO_API_PASSWORD", apikeyProperties['CRYPTO_API_PASSWORD'])
     }
 
     buildTypes {
@@ -57,6 +60,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
     implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
