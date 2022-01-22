@@ -10,4 +10,9 @@
     <string name="hint_crypto_token">Token...</string>
     <string name="button_settings_description">Button Settings</string>
     <string name="default_notification_channel_id">Default Channel ID</string>
+    <string name="hint_crypto_amount">Amount...</string>
+    <string name="hint_value">Value...</string>
+    <string name="add_order">Add order</string>
+    <string name="buy_order">Buy order</string>
+    <string name="sell_order">Sell order</string>
 </resources>

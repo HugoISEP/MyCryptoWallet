@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCryptoWallet">
         <activity
+            android:name=".ui.dashboard.detail.NewOrderActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.dashboard.detail.CryptoDetailActivity"
+            android:exported="true" />
+        <activity
             android:name=".NewCryptoActivity"
             android:exported="true" />
         <activity

@@ -25,7 +25,7 @@ class NewCryptoActivity : AppCompatActivity() {
             } else {
                 val extras: ArrayList<String> = arrayListOf()
                 extras.add(editCryptoViewName.text.toString())
-                extras.add( editCryptoViewName.text.toString())
+                extras.add( editCryptoViewToken.text.toString())
                 replyIntent.putStringArrayListExtra(EXTRA_REPLY, extras)
                 setResult(Activity.RESULT_OK, replyIntent)
             }
