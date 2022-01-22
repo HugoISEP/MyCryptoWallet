@@ -27,7 +27,7 @@ import com.google.android.material.card.MaterialCardView
 class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels {
-        DashboardViewModelFactory((requireActivity().application as CryptosApplication).repository)
+        DashboardViewModelFactory((requireActivity().application as CryptosApplication).cryptoRepository)
     }
 
     override fun onCreateView(
@@ -76,14 +76,14 @@ class HomeFragment : Fragment() {
             override fun onValueSelected(entry: Entry?, h: Highlight?) {
                 if (entry != null) {
                     cardView.visibility = View.VISIBLE
-                    lineChart.visibility = View.INVISIBLE
+                    lineChart.visibility = View.GONE
                     setCardValues(root, entry)
                 }
             }
 
             override fun onNothingSelected() {
-                cardView.visibility = View.INVISIBLE
-                lineChart.visibility = View.INVISIBLE
+                cardView.visibility = View.GONE
+                lineChart.visibility = View.GONE
             }
 
         })
@@ -131,6 +131,7 @@ class HomeFragment : Fragment() {
             homeViewModel.getCandlesData(TimeInterval.DAY, crypto.symbol)
         }
 
+        homeViewModel.getCandlesData(TimeInterval.DAY, crypto.symbol)
     }
 
 }

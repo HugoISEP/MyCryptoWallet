@@ -17,11 +17,10 @@
 
             <TextView
                 android:id="@+id/titleView"
-                android:layout_width="409dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal|fill_horizontal"
+                android:gravity="center"
                 android:text="Your cryptos wallet"
-                android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textSize="30sp" />
 
@@ -41,7 +40,7 @@
                 android:layout_margin="8dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="100dp"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -92,23 +91,14 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/oneYearButton"
+                            android:id="@+id/oneDayButton"
                             style="?attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
-                            android:text="1 year" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/oneMonthButton"
-                            style="?attr/borderlessButtonStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp"
-                            android:text="1 month" />
+                            android:text="24h" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/oneWeekButton"
@@ -120,11 +110,20 @@
                             android:text="1 week" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/oneDayButton"
+                            android:id="@+id/oneMonthButton"
                             style="?attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="24h" />
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text=" 1 month" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/oneYearButton"
+                            style="?attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 year" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -137,7 +136,7 @@
                 android:layout_height="300dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="100dp"
-                android:visibility="invisible"/>
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 
