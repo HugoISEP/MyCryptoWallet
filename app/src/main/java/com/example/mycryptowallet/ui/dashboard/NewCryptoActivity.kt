@@ -1,4 +1,4 @@
-package com.example.mycryptowallet
+package com.example.mycryptowallet.ui.dashboard
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
+import com.example.mycryptowallet.R
 
 class NewCryptoActivity : AppCompatActivity() {
     private lateinit var editCryptoViewName: EditText

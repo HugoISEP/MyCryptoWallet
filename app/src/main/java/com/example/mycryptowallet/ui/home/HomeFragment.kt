@@ -27,7 +27,7 @@ import com.google.android.material.card.MaterialCardView
 class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels {
-        DashboardViewModelFactory((requireActivity().application as CryptosApplication).repository)
+        DashboardViewModelFactory((requireActivity().application as CryptosApplication).cryptoRepository)
     }
 
     override fun onCreateView(

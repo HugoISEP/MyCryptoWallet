@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mycryptowallet.NewCryptoActivity
 import com.example.mycryptowallet.R
 import com.example.mycryptowallet.data.CryptosApplication
 import com.example.mycryptowallet.data.Entity.Crypto
