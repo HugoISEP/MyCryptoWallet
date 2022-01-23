@@ -17,11 +17,10 @@
 
             <TextView
                 android:id="@+id/titleView"
-                android:layout_width="409dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal|fill_horizontal"
+                android:gravity="center"
                 android:text="Your cryptos wallet"
-                android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textSize="30sp" />
 
@@ -41,7 +40,8 @@
                 android:layout_margin="8dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="100dp"
-                android:visibility="invisible">
+                app:cardElevation="5dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -58,7 +58,7 @@
 
                         <TextView
                             android:id="@+id/cardTitle"
-                            android:layout_width="366dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="Title"
@@ -82,6 +82,15 @@
                             android:textAppearance="?attr/textAppearanceBody2"
                             android:textColor="?android:attr/textColorSecondary" />
 
+                        <TextView
+                            android:id="@+id/totalValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="supporting text exemple"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?android:attr/textColorSecondary" />
+
                     </LinearLayout>
 
                     <!-- Buttons -->
@@ -92,39 +101,48 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/oneYearButton"
+                            android:id="@+id/oneDayButton"
                             style="?attr/borderlessButtonStyle"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp"
+                            android:layout_width="wrap_content"
                             android:layout_weight="1"
-                            android:text="1 year" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/oneMonthButton"
-                            style="?attr/borderlessButtonStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="8dp"
-                            android:text="1 month" />
+                            android:text="24 hours"
+                            android:textSize="10sp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/oneWeekButton"
                             style="?attr/borderlessButtonStyle"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="8dp"
-                            android:text="1 week" />
+                            android:text="1 week"
+                            android:textSize="10sp"/>
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/oneDayButton"
+                            android:id="@+id/oneMonthButton"
                             style="?attr/borderlessButtonStyle"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="24h" />
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text=" 1 month"
+                            android:textSize="10sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/oneYearButton"
+                            style="?attr/borderlessButtonStyle"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="1 year"
+                            android:textSize="10sp"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -137,7 +155,7 @@
                 android:layout_height="300dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="100dp"
-                android:visibility="invisible"/>
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 
