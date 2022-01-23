@@ -103,14 +103,14 @@ class TradingFragment : Fragment() {
         val positiveTradesAverage = positiveTrades.sumOf { ((it.second!!.avgFillPrice!! - it.first.avgFillPrice!!) * 100 / it.first.avgFillPrice!!).toDouble()} / positiveTrades.size
         positiveTradesTextView.text = positiveTrades.size.toString()
         positiveTradesTextView.setTextColor(Color.GREEN)
-        positiveTradesAverageTextView.text = String.format("~%.2f%%", positiveTradesAverage)
+        positiveTradesAverageTextView.text = String.format("%.2f%%", positiveTradesAverage)
         positiveTradesAverageTextView.setTextColor(Color.GREEN)
 
         val negativeTrades = completeTrades.filter { it.first.avgFillPrice!! >= it.second!!.avgFillPrice!!}
         val negativeTradesAverage = negativeTrades.sumOf { ((it.second!!.avgFillPrice!! - it.first.avgFillPrice!!) * 100 / it.first.avgFillPrice!!).toDouble()} / negativeTrades.size
         negativeTradesTextView.text = negativeTrades.size.toString()
         negativeTradesTextView.setTextColor(Color.RED)
-        negativeTradesAverageTextView.text = String.format("~%.2f%%", negativeTradesAverage)
+        negativeTradesAverageTextView.text = String.format("%.2f%%", negativeTradesAverage)
         negativeTradesAverageTextView.setTextColor(Color.RED)
 
         val layoutManager = LinearLayoutManager(root.context)
