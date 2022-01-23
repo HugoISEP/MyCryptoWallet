@@ -3,6 +3,7 @@ package com.example.mycryptowallet.ui.home
 import android.graphics.Color.BLACK
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.mycryptowallet.R
 import com.example.mycryptowallet.data.CryptosApplication
-import com.example.mycryptowallet.model.CryptoApi
+import com.example.mycryptowallet.data.Entity.Crypto
 import com.example.mycryptowallet.model.TimeInterval
+import com.example.mycryptowallet.service.LineChartXAxisHourTimeFormatter
+import com.example.mycryptowallet.service.LineChartXAxisTimeFormatter
 import com.example.mycryptowallet.ui.dashboard.DashboardViewModelFactory
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
@@ -93,6 +96,17 @@ class HomeFragment : Fragment() {
         val lineChart = root.findViewById(R.id.lineChart) as LineChart
         // LiveData for lineChart
         homeViewModel.lineDataSet().observe(viewLifecycleOwner, Observer<LineDataSet> { it ->
+            if (homeViewModel.timeInterval.equals(TimeInterval.DAY)){
+                lineChart.xAxis.valueFormatter = LineChartXAxisHourTimeFormatter()
+            } else {
+                lineChart.xAxis.valueFormatter = LineChartXAxisTimeFormatter()
+            }
+            it.setDrawValues(false)
+            lineChart.xAxis.setDrawGridLines(false);
+            lineChart.axisLeft.setDrawGridLines(false);
+            lineChart.axisRight.setDrawGridLines(false);
+            lineChart.legend.isEnabled = false;
+            lineChart.xAxis.labelCount = 10
             lineChart.description.isEnabled = false
             lineChart.visibility = View.VISIBLE
             lineChart.data = LineData(it)
@@ -102,36 +116,44 @@ class HomeFragment : Fragment() {
     }
 
     private fun setCardValues(root: View, entry: Entry){
-        val crypto = entry.data as CryptoApi
-        val cryptoSymbol = crypto.symbol.split("USDT")[0]
+        Log.d("setCardValues", entry.data.toString())
+        val crypto = entry.data as Crypto
+        val cryptoPair = crypto.token + "USDT"
 
         val titleView = root.findViewById<TextView>(R.id.cardTitle)
-        titleView.text = crypto.symbol
+        titleView.text = crypto.token
 
         val subTitleView = root.findViewById<TextView>(R.id.subTitle)
-        subTitleView.text = String.format("You own %.2f %s", entry.y, cryptoSymbol)
+        subTitleView.text = String.format("You own %.2f %s", crypto.amount, crypto.token)
 
         val supportingTextView = root.findViewById<TextView>(R.id.supportingText)
-        supportingTextView.text = String.format("Price: 1 %s = %.2f USD", cryptoSymbol, crypto.price.toFloat())
+        supportingTextView.text = String.format("Price: 1 %s = %.2f$", crypto.token, crypto.currentValue)
+
+        val totalValueTextView = root.findViewById<TextView>(R.id.totalValue)
+        totalValueTextView.text = String.format("Total value: %.2f$", crypto.amount * crypto.currentValue!!)
 
         val oneYearButton = root.findViewById<MaterialButton>(R.id.oneYearButton)
         oneYearButton.setOnClickListener {
-            homeViewModel.getCandlesData(TimeInterval.YEAR, crypto.symbol)
+            homeViewModel.timeInterval = TimeInterval.YEAR
+            homeViewModel.getCandlesData(cryptoPair)
         }
         val oneMonthButton = root.findViewById<MaterialButton>(R.id.oneMonthButton)
         oneMonthButton.setOnClickListener {
-            homeViewModel.getCandlesData(TimeInterval.MONTH, crypto.symbol)
+            homeViewModel.timeInterval = TimeInterval.MONTH
+            homeViewModel.getCandlesData(cryptoPair)
         }
         val oneWeekButton = root.findViewById<MaterialButton>(R.id.oneWeekButton)
         oneWeekButton.setOnClickListener {
-            homeViewModel.getCandlesData(TimeInterval.WEEK, crypto.symbol)
+            homeViewModel.timeInterval = TimeInterval.WEEK
+            homeViewModel.getCandlesData(cryptoPair)
         }
         val oneDayButton = root.findViewById<MaterialButton>(R.id.oneDayButton)
         oneDayButton.setOnClickListener {
-            homeViewModel.getCandlesData(TimeInterval.DAY, crypto.symbol)
+            homeViewModel.timeInterval = TimeInterval.DAY
+            homeViewModel.getCandlesData(cryptoPair)
         }
-
-        homeViewModel.getCandlesData(TimeInterval.DAY, crypto.symbol)
+        homeViewModel.timeInterval = TimeInterval.DAY
+        homeViewModel.getCandlesData(cryptoPair)
     }
 
 }

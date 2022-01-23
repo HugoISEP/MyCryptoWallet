@@ -8,7 +8,7 @@ import java.io.Serializable
 data class Crypto(
     @PrimaryKey val name: String,
     val token: String,
-    val currentValue: Double?,
+    var currentValue: Double?,
     val amount: Double,
     val amountValue: Double?,
     ) : Serializable {

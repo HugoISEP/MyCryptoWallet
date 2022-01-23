@@ -21,6 +21,7 @@ class HomeViewModel(private val cryptoRepository: CryptoRepository) : ViewModel(
     private val allCryptos: LiveData<List<Crypto>> = cryptoRepository.allCryptos.asLiveData()
 
     private val cryptoApiService = BinanceApiService.retrofitService
+    lateinit var timeInterval: TimeInterval
     private val _lineDataSet = MutableLiveData<LineDataSet>()
     fun lineDataSet(): LiveData<LineDataSet> {
         return _lineDataSet
@@ -31,7 +32,7 @@ class HomeViewModel(private val cryptoRepository: CryptoRepository) : ViewModel(
         getChartData(it)
     }
 
-    fun getCandlesData(timeInterval: TimeInterval, pairSelected: String) {
+    fun getCandlesData(pairSelected: String) {
         var interval = ""
         var startTime: Long = 0
         val currentEpochTime = Calendar.getInstance().timeInMillis
@@ -92,9 +93,10 @@ class HomeViewModel(private val cryptoRepository: CryptoRepository) : ViewModel(
                 val response = cryptoApiService.getCryptoPrice(crypto.token + "USDT")
 
                 if (response.isSuccessful && response.body() != null) {
-                    val content = response.body()
-                    val usdValue = content!!.price.toFloat() * crypto.amount
-                    entries.add(PieEntry(usdValue.toFloat(), crypto.token, content))
+                    val content = response.body()!!
+                    crypto.currentValue = content.price.toDouble()
+                    val usdValue = content.price.toFloat() * crypto.amount
+                    entries.add(PieEntry(usdValue.toFloat(), crypto.token, crypto))
                 } else {
                     Log.d("getCryptoPrice", "failure")
                 }
