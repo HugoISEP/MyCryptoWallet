@@ -15,4 +15,16 @@
     <string name="add_order">Add order</string>
     <string name="buy_order">Buy order</string>
     <string name="sell_order">Sell order</string>
+    <string name="trading_bot_settings">Trading bot Settings</string>
+    <string name="initial_investment">Initial Investment</string>
+    <string name="notification">Notification</string>
+    <string name="save">Save</string>
+    <string name="home_title">Your cryptos wallet</string>
+    <string name="time_interval_24hour">24 hours</string>
+    <string name="time_interval_1week">1 week</string>
+    <string name="time_interval_1month">1 month</string>
+    <string name="time_interval_1year">1 year</string>
+    <string name="wallet">Wallet</string>
+    <string name="initial_wallet">Initial wallet: </string>
+    <string name="week_trades">Week trades</string>
 </resources>

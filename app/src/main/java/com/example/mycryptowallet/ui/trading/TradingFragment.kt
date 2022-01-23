@@ -66,7 +66,7 @@ class TradingFragment : Fragment() {
         val initialWalletView: TextView = root.findViewById(R.id.initialWallet)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(root.context)
         initialWallet = sharedPreferences.getFloat(INITIAL_TRADING_WALLET, 0f)
-        initialWalletView.text = String.format("initial: %.2f $", initialWallet)
+        initialWalletView.text = String.format("Initial: %.2f $", initialWallet)
     }
 
 
