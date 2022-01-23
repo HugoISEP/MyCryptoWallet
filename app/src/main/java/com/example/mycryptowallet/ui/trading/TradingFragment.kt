@@ -89,18 +89,29 @@ class TradingFragment : Fragment() {
         }
     }
 
-    // TODO: fix stream compatibility
     private fun weekTradesInitialization(list: MutableList<Pair<CryptoOrder, CryptoOrder?>>, root: View){
         val numberOfTradesTextView: TextView = root.findViewById(R.id.numberOfTrades)
         val positiveTradesTextView: TextView = root.findViewById(R.id.positiveTrades)
+        val positiveTradesAverageTextView: TextView = root.findViewById(R.id.positiveTradesAverage)
         val negativeTradesTextView: TextView = root.findViewById(R.id.negativeTrades)
+        val negativeTradesAverageTextView: TextView = root.findViewById(R.id.negativeTradesAverage)
 
-        val completeTrades = list.stream().filter { it.second != null}.collect(Collectors.toList())
+        val completeTrades = list.filter { it.second != null}
         numberOfTradesTextView.text = completeTrades.size.toString()
-        positiveTradesTextView.text = completeTrades.stream().filter { it.first.avgFillPrice!! < it.second!!.avgFillPrice!!}.collect(Collectors.toList()).size.toString()
-        positiveTrades.setTextColor(Color.GREEN)
-        negativeTradesTextView.text = completeTrades.stream().filter { it.first.avgFillPrice!! > it.second!!.avgFillPrice!!}.collect(Collectors.toList()).size.toString()
-        negativeTrades.setTextColor(Color.RED)
+
+        val positiveTrades = completeTrades.filter { it.first.avgFillPrice!! < it.second!!.avgFillPrice!!}
+        val positiveTradesAverage = positiveTrades.sumOf { ((it.second!!.avgFillPrice!! - it.first.avgFillPrice!!) * 100 / it.first.avgFillPrice!!).toDouble()} / positiveTrades.size
+        positiveTradesTextView.text = positiveTrades.size.toString()
+        positiveTradesTextView.setTextColor(Color.GREEN)
+        positiveTradesAverageTextView.text = String.format("~%.2f%%", positiveTradesAverage)
+        positiveTradesAverageTextView.setTextColor(Color.GREEN)
+
+        val negativeTrades = completeTrades.filter { it.first.avgFillPrice!! >= it.second!!.avgFillPrice!!}
+        val negativeTradesAverage = negativeTrades.sumOf { ((it.second!!.avgFillPrice!! - it.first.avgFillPrice!!) * 100 / it.first.avgFillPrice!!).toDouble()} / negativeTrades.size
+        negativeTradesTextView.text = negativeTrades.size.toString()
+        negativeTradesTextView.setTextColor(Color.RED)
+        negativeTradesAverageTextView.text = String.format("~%.2f%%", negativeTradesAverage)
+        negativeTradesAverageTextView.setTextColor(Color.RED)
 
         val layoutManager = LinearLayoutManager(root.context)
         val recyclerView: RecyclerView = root.findViewById(R.id.tradeRecyclerView)
