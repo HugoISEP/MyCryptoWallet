@@ -25,6 +25,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import java.text.DecimalFormat
 
 
 class HomeFragment : Fragment() {
@@ -124,7 +125,7 @@ class HomeFragment : Fragment() {
         titleView.text = crypto.token
 
         val subTitleView = root.findViewById<TextView>(R.id.subTitle)
-        subTitleView.text = String.format("You own %.2f %s", crypto.amount, crypto.token)
+        subTitleView.text = String.format("You own %s %s", DecimalFormat("#.#####").format(crypto.amount), crypto.token)
 
         val supportingTextView = root.findViewById<TextView>(R.id.supportingText)
         supportingTextView.text = String.format("Price: 1 %s = %.2f$", crypto.token, crypto.currentValue)
