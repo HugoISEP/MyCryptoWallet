@@ -1,14 +1,17 @@
 package com.example.mycryptowallet.ui.trading
 
+import android.app.Application
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.mycryptowallet.api.TradingBotApiService
 import com.example.mycryptowallet.model.CryptoOrder
+import com.example.mycryptowallet.service.Constant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
 
-class TradingViewModel : ViewModel() {
+class TradingViewModel(application: Application) : AndroidViewModel(application) {
 
     private val tradingBotApiService = TradingBotApiService.retrofitService
     private val reloadTrigger = MutableLiveData(false)
@@ -47,12 +50,18 @@ class TradingViewModel : ViewModel() {
     }
 
     // Get week trades of the trading bot
-    private fun fetchWeekTrades() = liveData {
+    fun fetchWeekTrades() = liveData {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplication<Application?>().applicationContext)
+        val tradeDuration = sharedPreferences.getString(Constant.TRADE_DURATION, "Week")
+        val timeInSeconds = when(tradeDuration){
+            "Day" -> 86400
+            "Month" -> 2629800
+            else -> 604800 // for "Week" value
+        }
         try {
             val currentEpochTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
-            val sevenDayInMillis = 604800
-            val epochTimeOneWeekAgo = currentEpochTime - sevenDayInMillis
-            val response = tradingBotApiService.getBotOrderHistory(id=1, startTime=epochTimeOneWeekAgo)
+            val epochTimeAgo = currentEpochTime - timeInSeconds
+            val response = tradingBotApiService.getBotOrderHistory(id=1, startTime=epochTimeAgo)
             if (response.isSuccessful && response.body() != null) {
                 val content = response.body()
                 val orders = content!!.toMutableList()

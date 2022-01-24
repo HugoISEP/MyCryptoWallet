@@ -4,6 +4,7 @@ object Constant {
     // SharedPreferences
     const val INITIAL_TRADING_WALLET = "initialTradingWallet"
     const val NOTIFICATION_PREFERENCE = "notificationPreference"
+    const val TRADE_DURATION = "trade_duration"
 
     // Notification topic
     const val NOTIFICATION_TOPIC = "BIG_WILL"

@@ -121,10 +121,9 @@
                     <!-- Title, secondary and supporting text -->
 
                     <TextView
-                        android:id="@+id/cardTitle"
+                        android:id="@+id/cardTitleRight"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/week_trades"
                         android:textAppearance="?attr/textAppearanceHeadline6" />
 
                     <TextView

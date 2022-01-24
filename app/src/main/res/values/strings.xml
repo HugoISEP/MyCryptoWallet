@@ -26,5 +26,10 @@
     <string name="time_interval_1year">1 year</string>
     <string name="wallet">Wallet</string>
     <string name="initial_wallet">Initial wallet: </string>
-    <string name="week_trades">Week trades</string>
+    <string name="trades_duration">%1$s trades</string>
+    <string-array name="trade_duration">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
 </resources>

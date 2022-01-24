@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mycryptowallet.R
 import com.example.mycryptowallet.service.Constant
 import com.example.mycryptowallet.service.Constant.NOTIFICATION_TOPIC
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_trading_settings.*
@@ -30,8 +33,15 @@ class TradingSettingsActivity: AppCompatActivity(){
         initialInvestmentTextView = findViewById(R.id.textField)
         notificationSwitchView = findViewById(R.id.notificationSwitch)
         saveButton = findViewById(R.id.saveButton)
+        val items = resources.getStringArray(R.array.trade_duration)
+        val adapter = ArrayAdapter(this, R.layout.dropdown_item, items)
+        val materialAutoCompleteTextView = (textInputLayout.editText as MaterialAutoCompleteTextView)
+        val editTextFilledExposedDropdown = findViewById<AutoCompleteTextView>(R.id.filled_exposed_dropdown)
+        editTextFilledExposedDropdown.setAdapter(adapter)
 
         // Set form values
+        val defaultTradeDuration = items.find { it.equals(sharedPreferences.getString(Constant.TRADE_DURATION, items.get(1))) }!!
+        materialAutoCompleteTextView.setText(defaultTradeDuration,false)
         notificationSwitchView.isChecked = sharedPreferences.getBoolean(Constant.NOTIFICATION_PREFERENCE, false)
         initialInvestmentTextView.setText(sharedPreferences.getFloat(Constant.INITIAL_TRADING_WALLET, 0f).toString())
         initialInvestmentTextView.addTextChangedListener(textWatcher)
@@ -40,6 +50,7 @@ class TradingSettingsActivity: AppCompatActivity(){
         saveButton.setOnClickListener {
             sharedPreferences.edit().putFloat(Constant.INITIAL_TRADING_WALLET, initialInvestmentTextView.text.toString().toFloat()).apply()
             sharedPreferences.edit().putBoolean(Constant.NOTIFICATION_PREFERENCE, notificationSwitch.isChecked).apply()
+            sharedPreferences.edit().putString(Constant.TRADE_DURATION, materialAutoCompleteTextView.text.toString()).apply()
             if (sharedPreferences.getBoolean(Constant.NOTIFICATION_PREFERENCE, true)){
                 FirebaseMessaging.getInstance().subscribeToTopic(NOTIFICATION_TOPIC)
             } else {

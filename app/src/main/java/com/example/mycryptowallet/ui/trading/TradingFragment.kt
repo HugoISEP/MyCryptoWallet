@@ -17,11 +17,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mycryptowallet.R
 import com.example.mycryptowallet.model.CryptoOrder
 import com.example.mycryptowallet.model.FtxBalance
+import com.example.mycryptowallet.service.Constant
 import com.example.mycryptowallet.service.Constant.INITIAL_TRADING_WALLET
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_trading.*
-import java.util.stream.Collectors
 
 
 class TradingFragment : Fragment() {
@@ -39,6 +39,7 @@ class TradingFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_trading, container, false)
 
         swipeRefreshInitialization(root)
+        tradingDurationInitialization(root)
         initialInvestmentInitialization(root)
 
         tradingViewModel.balances.observe(viewLifecycleOwner, Observer {
@@ -67,6 +68,13 @@ class TradingFragment : Fragment() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(root.context)
         initialWallet = sharedPreferences.getFloat(INITIAL_TRADING_WALLET, 0f)
         initialWalletView.text = String.format("Initial: %.2f $", initialWallet)
+    }
+
+    private fun tradingDurationInitialization(root: View){
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(root.context)
+        val tradeDuration = sharedPreferences.getString(Constant.TRADE_DURATION, "Week")
+        val titleRightCardTextView = root.findViewById<TextView>(R.id.cardTitleRight)
+        titleRightCardTextView.text = resources.getString(R.string.trades_duration, tradeDuration)
     }
 
 
@@ -131,6 +139,7 @@ class TradingFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         tradingViewModel.refresh()
+        tradingDurationInitialization(requireView())
         initialInvestmentInitialization(requireView())
     }
 
