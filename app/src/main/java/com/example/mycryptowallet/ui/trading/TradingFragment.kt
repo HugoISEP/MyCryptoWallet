@@ -108,14 +108,24 @@ class TradingFragment : Fragment() {
         numberOfTradesTextView.text = completeTrades.size.toString()
 
         val positiveTrades = completeTrades.filter { it.first.avgFillPrice!! < it.second!!.avgFillPrice!!}
-        val positiveTradesAverage = positiveTrades.sumOf { ((it.second!!.avgFillPrice!! - it.first.avgFillPrice!!) * 100 / it.first.avgFillPrice!!).toDouble()} / positiveTrades.size
+        var positiveTradesAverage: Float
+        if (positiveTrades.isNotEmpty()) {
+            positiveTradesAverage = (positiveTrades.sumOf { ((it.second!!.avgFillPrice!! - it.first.avgFillPrice!!) * 100 / it.first.avgFillPrice!!).toDouble()} / positiveTrades.size).toFloat()
+        } else {
+            positiveTradesAverage = 0f
+        }
         positiveTradesTextView.text = positiveTrades.size.toString()
         positiveTradesTextView.setTextColor(Color.GREEN)
         positiveTradesAverageTextView.text = String.format("%.2f%%", positiveTradesAverage)
         positiveTradesAverageTextView.setTextColor(Color.GREEN)
 
         val negativeTrades = completeTrades.filter { it.first.avgFillPrice!! >= it.second!!.avgFillPrice!!}
-        val negativeTradesAverage = negativeTrades.sumOf { ((it.second!!.avgFillPrice!! - it.first.avgFillPrice!!) * 100 / it.first.avgFillPrice!!).toDouble()} / negativeTrades.size
+        var negativeTradesAverage: Float
+        if (negativeTrades.isNotEmpty()) {
+            negativeTradesAverage = (negativeTrades.sumOf { ((it.second!!.avgFillPrice!! - it.first.avgFillPrice!!) * 100 / it.first.avgFillPrice!!).toDouble()} / negativeTrades.size).toFloat()
+        } else {
+            negativeTradesAverage = 0f
+        }
         negativeTradesTextView.text = negativeTrades.size.toString()
         negativeTradesTextView.setTextColor(Color.RED)
         negativeTradesAverageTextView.text = String.format("%.2f%%", negativeTradesAverage)

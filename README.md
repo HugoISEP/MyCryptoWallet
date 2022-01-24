@@ -6,9 +6,9 @@ It is also possible to see the results of the trading bot connected to the appli
 ## Set up
 
 ### credentials  
-> The project use Binance API, so get your account (ask hugo for a referential link 😉) and setup your api credentials
+> The project use Binance API, so get your account (ask us for a referential link 😉) and setup your api credentials
 
-> Ask hugo to get the credentials of the trading bot api (CRYPTO_API_KEY & CRYPTO_API_PASSWORD)
+> Ask us to get the credentials of the trading bot api (CRYPTO_API_KEY & CRYPTO_API_PASSWORD)
 
 > Create a file apikey.properties in the root of the project and add these lines (don't forget the quotes):  
  ```
