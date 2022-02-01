@@ -11,5 +11,5 @@ object Constant {
 
     // API
     const val BINANCE_URL = "https://api.binance.com/api/v3/"
-    const val TRADING_BOT_URL = "https://raspberry78.freeboxos.fr/"
+    const val TRADING_BOT_URL = "https://crypto.raspberry78.me/"
 }
