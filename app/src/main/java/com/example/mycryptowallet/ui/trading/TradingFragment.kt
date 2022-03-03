@@ -22,11 +22,13 @@ import com.example.mycryptowallet.service.Constant.INITIAL_TRADING_WALLET
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_trading.*
+import kotlin.random.Random
 
 
 class TradingFragment : Fragment() {
 
     private lateinit var tradingViewModel: TradingViewModel
+    private lateinit var tradesRecyclerView: RecyclerView
     private var initialWallet = 0f
 
     override fun onCreateView(
@@ -41,6 +43,7 @@ class TradingFragment : Fragment() {
         swipeRefreshInitialization(root)
         tradingDurationInitialization(root)
         initialInvestmentInitialization(root)
+        initTradesRecyclerView(root)
 
         tradingViewModel.balances.observe(viewLifecycleOwner, Observer {
             balancesInitialization(root, it)
@@ -70,6 +73,14 @@ class TradingFragment : Fragment() {
         initialWalletView.text = String.format("Initial: %.2f $", initialWallet)
     }
 
+    private fun initTradesRecyclerView(root: View){
+        val layoutManager = LinearLayoutManager(root.context)
+        tradesRecyclerView = root.findViewById(R.id.tradeRecyclerView)
+        tradesRecyclerView.layoutManager = layoutManager
+        val adapter = TradeRecyclerAdapter(emptyList())
+        tradesRecyclerView.adapter = adapter
+    }
+
     private fun tradingDurationInitialization(root: View){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(root.context)
         val tradeDuration = sharedPreferences.getString(Constant.TRADE_DURATION, "Week")
@@ -92,6 +103,7 @@ class TradingFragment : Fragment() {
         chipGroup.removeAllViews()
         list.forEach { balance ->
             val chip = Chip(root.context)
+            chip.id = balance.usdValue.toInt()
             chip.text = String.format("%.2f %s", balance.total, balance.coin)
             chipGroup.addView(chip)
         }
@@ -132,10 +144,10 @@ class TradingFragment : Fragment() {
         negativeTradesAverageTextView.setTextColor(Color.RED)
 
         val layoutManager = LinearLayoutManager(root.context)
-        val recyclerView: RecyclerView = root.findViewById(R.id.tradeRecyclerView)
-        recyclerView.layoutManager = layoutManager
+        tradesRecyclerView = root.findViewById(R.id.tradeRecyclerView)
+        tradesRecyclerView.layoutManager = layoutManager
         val adapter = TradeRecyclerAdapter(completeTrades as List<Pair<CryptoOrder, CryptoOrder>>)
-        recyclerView.adapter = adapter
+        tradesRecyclerView.adapter = adapter
     }
 
     private fun tradingSettingButtonInitialization(root: View){

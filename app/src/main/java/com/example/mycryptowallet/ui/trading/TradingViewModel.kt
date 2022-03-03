@@ -50,7 +50,7 @@ class TradingViewModel(application: Application) : AndroidViewModel(application)
     }
 
     // Get week trades of the trading bot
-    fun fetchWeekTrades() = liveData {
+    private fun fetchWeekTrades() = liveData {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplication<Application?>().applicationContext)
         val tradeDuration = sharedPreferences.getString(Constant.TRADE_DURATION, "Week")
         val timeInSeconds = when(tradeDuration){
